@@ -22,6 +22,8 @@ public class Producer {
     public void sendMessage(final String msg){
         LOG.debug("Sending message {}", msg);
 
+        //test this
+
         jmsTemplate.send(new MessageCreator() {
             @Override
             public Message createMessage(Session session) throws JMSException {

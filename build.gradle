@@ -8,19 +8,36 @@ junitVersion='4.7'
 cglibVersion='2.2'
 slf4jVersion='1.6.2'
 log4jVersion='1.2.16'
+//hibernateVersion='4.0.0.CR4'//'3.6.7.Final'
+hibernateVersion='3.5.0-Final'//'3.6.7.Final'
+h2Version='1.3.160'
+javassistVersion='3.4.GA'
 
 repositories {
 	mavenCentral()
     mavenRepo urls:'http://maven.springframework.org/milestone'
 }
 
+//transitive = true
+
 dependencies {
 	compile "org.springframework:spring-core:${springVersion}"
 	compile "org.springframework:spring-context:${springVersion}"
 	compile "org.springframework:spring-jms:${springVersion}"
+	compile "org.springframework:spring-jdbc:${springVersion}"
+	compile "org.springframework:spring-orm:${springVersion}"
 	compile "org.apache.activemq:activemq-core:${activemqVersion}"
     compile "cglib:cglib-nodep:${cglibVersion}"
     compile "org.slf4j:slf4j-log4j12:${slf4jVersion}"
     compile "log4j:log4j:${log4jVersion}"
+//    compile "org.hibernate:hibernate-core:${hibernateVersion}"
+    compile "org.hibernate:hibernate-annotations:${hibernateVersion}"
+    compile 'org.hibernate:ejb3-persistence:1.0.2.GA'
+    compile "javassist:javassist:${javassistVersion}"
+
+    /*compile ("org.hibernate:hibernate-core:${hibernateVersion}"){
+        exclude module: 'jandex'
+    }*/
+    compile "com.h2database:h2:${h2Version}"
     testCompile "junit:junit:${junitVersion}"
 }
