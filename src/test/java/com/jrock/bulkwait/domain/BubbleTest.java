@@ -2,11 +2,13 @@ package com.jrock.bulkwait.domain;
 
 import com.jrock.bulkwait.BaseTest;
 import com.jrock.bulkwait.service.BubbleService;
-import com.jrock.bulkwait.service.BubbleServiceImpl;
-import org.hamcrest.core.IsNot;
 import org.junit.Test;
 
-import static org.junit.Assert.assertNotNull;
+//import static org.hamcrest.CoreMatchers.*;
+
+import static org.hamcrest.Matchers.*; //present in hamcrest-all v1.1
+
+
 import static org.junit.Assert.assertThat;
 
 /**
@@ -14,20 +16,33 @@ import static org.junit.Assert.assertThat;
  */
 public class BubbleTest extends BaseTest {
 
-//    @Autowired
-//    BubbleRepository repository;
     
     @Test
+    @SuppressWarnings({"unchecked"})
     public void test_db_insert() throws Exception {
         Bubble bubble = new Bubble();
-        bubble.setName("bayo");
+        bubble.setName("bubble");
 
         BubbleService service = ctx.getBean(BubbleService.class);
 
         Long id = service.add(bubble);
         System.out.println(id);
-//        assertThat(id, IsNot.not(null));
-        assertNotNull(id);
+        assertThat(id, is(allOf(notNullValue(), equalTo(50l))));
+    }
 
+    @Test
+    @SuppressWarnings({"unchecked"})
+    public void test_batch_insert() throws Exception {
+        long count = 50;
+        for(int i=0; i<500; i++){
+            Bubble bubble = new Bubble();
+            String name = "b"+i;
+            bubble.setName(name);
+            BubbleService service = ctx.getBean(BubbleService.class);
+            service.add(bubble);
+            
+            assertThat(bubble.getId(), is(allOf(notNullValue(), equalTo(count++))));
+            assertThat(bubble, hasProperty("name", equalTo(name)));
+        }
     }
 }
