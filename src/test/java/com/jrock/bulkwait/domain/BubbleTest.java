@@ -4,9 +4,7 @@ import com.jrock.bulkwait.BaseTest;
 import com.jrock.bulkwait.service.BubbleService;
 import org.junit.Test;
 
-//import static org.hamcrest.CoreMatchers.*;
-
-import static org.hamcrest.Matchers.*; //present in hamcrest-all v1.1
+import static org.hamcrest.Matchers.*;
 
 
 import static org.junit.Assert.assertThat;
