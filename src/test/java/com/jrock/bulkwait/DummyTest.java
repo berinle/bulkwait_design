@@ -3,6 +3,7 @@ package com.jrock.bulkwait;
 import com.jrock.bulkwait.activemq.Consumer;
 import com.jrock.bulkwait.activemq.Producer;
 import com.jrock.bulkwait.config.AppConfig;
+import com.jrock.bulkwait.config.DevConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -21,7 +22,7 @@ public class DummyTest {
     public void setUp() throws Exception {
         ctx = new AnnotationConfigApplicationContext();
         ctx.getEnvironment().setDefaultProfiles("dev");
-        ctx.register(AppConfig.class);
+        ctx.register(AppConfig.class, DevConfig.class);
         ctx.refresh();
     }
 

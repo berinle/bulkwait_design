@@ -7,6 +7,7 @@ import com.jrock.bulkwait.repository.internal.BubbleRepositoryHibernateImpl;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.hibernate.dialect.H2Dialect;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -31,13 +32,12 @@ import java.util.Properties;
 @Configuration
 @ComponentScan({"com.jrock.bulkwait.service"})
 @EnableTransactionManagement
-@Profile("dev")
 public class AppConfig {
 
-    @Bean
-    public ConnectionFactory connectionFactory(){
-       return new ActiveMQConnectionFactory("tcp://localhost:61616");
-    }
+    @Autowired
+    private DataSource dataSource;
+    @Autowired
+    private ConnectionFactory connectionFactory;
 
     @Bean
     public Queue luceneQueue(){
@@ -60,26 +60,14 @@ public class AppConfig {
     public JmsTemplate jmsTemplate(){
         JmsTemplate jmsTemplate = new JmsTemplate();
         jmsTemplate.setDefaultDestination(luceneQueue());
-        jmsTemplate.setConnectionFactory(connectionFactory());
+        jmsTemplate.setConnectionFactory(connectionFactory);
         return jmsTemplate;
-    }
-
-    @Bean
-    public DataSource dataSource(){
-        return new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.H2)
-//                .addScript("classpath:com/jrock/bulkwait/config/sql/schema.sql")
-//                .addScript("classpath:com/jrock/bulkwait/config/sql/test-data.sql")
-                .addScript("classpath:schema.sql")
-                .addScript("classpath:test-data.sql")
-                .build();
-
     }
 
     @Bean
     public AnnotationSessionFactoryBean sessionFactory(){
         AnnotationSessionFactoryBean bean = new AnnotationSessionFactoryBean();
-        bean.setDataSource(dataSource());
+        bean.setDataSource(dataSource);
         bean.setPackagesToScan(new String[]{"com.jrock.bulkwait.domain.**"});
         bean.setHibernateProperties(getHibernateProperties());
         return bean;
@@ -103,7 +91,7 @@ public class AppConfig {
 
     @Bean
     public PlatformTransactionManager txManager() {
-        return new DataSourceTransactionManager(dataSource());
+        return new DataSourceTransactionManager(dataSource);
 
         //Caused by: java.lang.NoClassDefFoundError: org/hibernate/engine/spi/SessionFactoryImplementor
 //        return new HibernateTransactionManager(sessionFactory().getObject()); //not working, investigate
