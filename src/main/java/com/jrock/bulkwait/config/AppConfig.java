@@ -97,6 +97,11 @@ public class AppConfig {
 //        return new HibernateTransactionManager(sessionFactory().getObject()); //not working, investigate
     }
 
+    @Bean
+    public PlatformTransactionManager annotationDrivenTransactionManager() {
+        return txManager();
+    }
+
 
 
 }
