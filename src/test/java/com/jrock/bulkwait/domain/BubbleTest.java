@@ -4,9 +4,8 @@ import com.jrock.bulkwait.BaseTest;
 import com.jrock.bulkwait.service.BubbleService;
 import org.hibernate.Hibernate;
 import org.hibernate.SessionFactory;
-import org.hibernate.classic.Session;
+import org.hibernate.Session;
 import org.junit.Test;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.Matchers.*;
 
